@@ -1,0 +1,10 @@
+.rev-button {
+  border-radius: 3px;
+  margin: 0 5px;
+  color: #333;
+  font-size: 1em;
+
+  &.active {
+    background-color: orange;
+  }
+}
