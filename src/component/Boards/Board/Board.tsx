@@ -3,13 +3,13 @@ import IBoard from "../../../interface/board";
 import './Board.scss';
 import MajorTom from './assets/images/MajorTom.png';
 import MCU from './assets/images/mcu.png';
-import {webSocketService} from "../../../service/web-socket-service";
+import CommandService from "../../../service/command-service";
 
-class Board extends React.Component<{ board: IBoard, heartbeat: boolean }, { command: string }> {
+class Board extends React.Component<{ board: IBoard, heartbeat: boolean }, { action: string }> {
     constructor( props: { board: IBoard, heartbeat: boolean } ) {
         super( props );
         this.state = {
-            command: ''
+            action: props.board.commands![0] || ''
         };
     }
 
@@ -27,7 +27,7 @@ class Board extends React.Component<{ board: IBoard, heartbeat: boolean }, { com
     }
 
     private sendCommand(): void {
-        webSocketService.sendCommand( this.props.board.id, this.state.command );
+        CommandService.executeCommand( this.props.board.id, this.state.action );
     }
 
     public render() {
@@ -37,24 +37,32 @@ class Board extends React.Component<{ board: IBoard, heartbeat: boolean }, { com
                     <img className={ "board-icon" } src={ this.getTypeIcon() } />
                     <h1 className={ "board-title" }>{ this.props.board.type }</h1>
                     <h2 className={ "board-subtitle" }>port: { this.props.board.id }</h2>
-                    <div className={"board-heartbeat"}>
-                        <div title={"Heartbeat"} className={`heartbeat ${ this.props.heartbeat ? 'pulse' : '' }`} />
+                    <div className={ "board-heartbeat" }>
+                        <div title={ "Heartbeat" } className={ `heartbeat ${ this.props.heartbeat ? 'pulse' : '' }` } />
                     </div>
                 </header>
                 <div className={"board-commands"}>
                     <h3 className={"board-commands-header"}>Available commands</h3>
-                    <select defaultValue={"BLINKON"}
-                            onChange={ ( event ) => { this.setState( { command: event.target.value } ) } }>
-                        { this.props.board.commands!.map( ( command ) =>
-                            <option key={ command }
-                                    value={ command }>
-                                { command }
-                            </option>)
+                    {
+                        this.props.board.commands ? (
+                            <div className={"board-commands-form"}>
+                                <select defaultValue={ this.state.action }
+                                        onChange={ ( event ) => { this.setState( { action: event.target.value } ) } }>
+                                    { this.props.board.commands!.map( ( command: string ) =>
+                                        <option key={ command }
+                                                value={ command }>
+                                            { command }
+                                        </option>)
 
-                        }
-                    </select>
-                    <button className={"rev-button"}
-                            onClick={ this.sendCommand.bind( this ) }>Execute</button>
+                                    }
+                                </select>
+                                <button className={"rev-button"}
+                                        onClick={ this.sendCommand.bind( this ) }>Execute</button>
+                            </div>
+                        ) : (
+                            <span>This board doesn't have any available commands</span>
+                        )
+                    }
                 </div>
                 <footer className={ "board-footer" }>
                     <span>current board job: </span>

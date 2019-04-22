@@ -1,9 +1,10 @@
-import WebSocketEvent, { WebSocketEventType } from "../domain/web-socket-event";
-import { boards as model } from "../model/boards";
-import IBoard from "../interface/board";
+import IWebSocketMessage, {WebSocketMessageType} from "../interface/web-socket-message";
+import IBoardEvent from "../interface/board-event";
+import ICommandEvent from "../interface/command-event";
 
 class WebSocketService {
     private socket: WebSocket;
+    private messageListeners: ( ( message: IWebSocketMessage ) => void )[] = [];
 
     host = 'localhost';
     port = '80';
@@ -15,32 +16,22 @@ class WebSocketService {
         this.socket.addEventListener( 'message', this.handleMessageReceived.bind( this ) )
     }
 
+    public addMessageListener( listener: ( message: IWebSocketMessage ) => void ): void {
+        this.messageListeners.push( listener );
+    }
+
     private handleConnectionOpen( event: any ): void {
         // console.log( event );
         // do something
     }
 
     private handleMessageReceived( message: MessageEvent ): void {
-        const event = <WebSocketEvent>JSON.parse( message.data );
-
-        switch ( event.type ) {
-            case WebSocketEventType.ADD_BOARD:
-                model.add( <IBoard> event.payload );
-                break;
-            case WebSocketEventType.REMOVE_BOARD:
-                model.remove( event.payload );
-                break;
-            case WebSocketEventType.UPDATE_BOARD:
-                model.update( event.payload );
-                break;
-            case WebSocketEventType.UPDATE_ALL_BOARDS:
-                model.setBoards( <IBoard[]> event.payload );
-                break;
-        }
+        const parsedMessage = <IWebSocketMessage>JSON.parse( message.data );
+        this.messageListeners.forEach( listener => listener( parsedMessage ) );
     }
 
-    public sendCommand( boardId: string, command: string ): void {
-        this.socket.send( JSON.stringify( { boardId: boardId, method: command } ) );
+    public send( type: WebSocketMessageType, payload: IBoardEvent | ICommandEvent ): void {
+        this.socket.send( JSON.stringify( { type: type, payload: payload } ) );
     }
 
 }

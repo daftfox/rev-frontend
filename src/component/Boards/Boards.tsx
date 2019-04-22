@@ -2,12 +2,9 @@ import * as React from 'react';
 import IBoard from "../../interface/board";
 import {boards as model} from "../../model/boards";
 import Board from "./Board/Board";
-import { webSocketService } from '../../service/web-socket-service';
 import './Boards.scss';
 
 class Boards extends React.Component<{}, { boards: IBoard[], heartbeat: boolean }> {
-    service = webSocketService;
-
     constructor( props: any ) {
         super( props );
 
@@ -43,7 +40,7 @@ class Boards extends React.Component<{}, { boards: IBoard[], heartbeat: boolean 
 
                 <div className={"boards-list"}>
                     {
-                        this.state.boards.map( ( board ) => <Board key={ board.id } board={ board } heartbeat={this.state.heartbeat} />)
+                        this.state.boards.map( ( board ) => <Board key={ board.id } board={ board } heartbeat={ this.state.heartbeat } />)
                     }
                 </div>
 

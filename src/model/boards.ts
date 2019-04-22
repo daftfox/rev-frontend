@@ -1,10 +1,16 @@
 import IBoard from "../interface/board";
 import { Observable } from 'rxjs';
 import {Subject} from "rxjs/internal/Subject";
+import BoardService from '../service/board-service';
 
 class Boards {
     private _boards: IBoard[] = [];
     private $boards = new Subject<IBoard[]>();
+    private service: BoardService;
+
+    constructor() {
+        this.service = new BoardService( this );
+    }
 
     public getBoards(): Observable<IBoard[]> {
         return this.$boards;
@@ -25,8 +31,8 @@ class Boards {
         this.$boards.next( this._boards );
     }
 
-    public remove( boardId: string ): void {
-        this._boards.splice( this._boards.findIndex( board => board.id === boardId ), 1 );
+    public remove( board: IBoard ): void {
+        this._boards.splice( this._boards.findIndex( _board => _board.id === board.id ), 1 );
         this.$boards.next( this._boards );
     }
 }

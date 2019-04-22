@@ -32,7 +32,7 @@
   .heartbeat {
     height: 10px;
     width: 10px;
-    background-color: #ff2444;
+    background-color: rgba(#ff2444, 0);
     border-radius: 50%;
 
     &.pulse {
@@ -67,9 +67,9 @@
 
   display: grid;
   grid-template-areas:
-      "header header"
-      "select button";
-  grid-template-columns: 1fr 1fr;
+      "header"
+      "commands-form";
+  grid-template-columns: 1fr;
   grid-template-rows: 1.5em 1.5em;
 
   select {
@@ -85,6 +85,13 @@
   color: #555;
   grid-area: header;
   font-size: .8em;
+}
+
+.board-commands-form {
+  grid-area: commands-form;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "select button";
 }
 
 .board-footer {
@@ -108,24 +115,30 @@
 @-webkit-keyframes heartbeat {
   0% {
     -webkit-box-shadow: 0 0 0 0 rgba(#ff2444, 0.4);
+    background-color: rgba(#ff2444, 1);
   }
   70% {
     -webkit-box-shadow: 0 0 0 10px rgba(#ff2444, 0);
+    background-color: rgba(#ff2444, 0);
   }
   100% {
+    background-color: rgba(#ff2444, 0);
     -webkit-box-shadow: 0 0 0 0 rgba(#ff2444, 0);
   }
 }
 @keyframes heartbeat {
   0% {
+    background-color: rgba(#ff2444, 1);
     -moz-box-shadow: 0 0 0 0 rgba(#ff2444, 0.4);
     box-shadow: 0 0 0 0 rgba(#ff2444, 0.4);
   }
   70% {
+    background-color: rgba(#ff2444, 0);
     -moz-box-shadow: 0 0 0 10px rgba(#ff2444, 0);
     box-shadow: 0 0 0 10px rgba(#ff2444, 0);
   }
   100% {
+    background-color: rgba(#ff2444, 0);
     -moz-box-shadow: 0 0 0 0 rgba(#ff2444, 0);
     box-shadow: 0 0 0 0 rgba(#ff2444, 0);
   }
