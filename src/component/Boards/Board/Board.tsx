@@ -36,7 +36,7 @@ class Board extends React.Component<{ board: IBoard, heartbeat: boolean }, { act
                 <header className={ "board-header" }>
                     <img className={ "board-icon" } src={ this.getTypeIcon() } />
                     <h1 className={ "board-title" }>{ this.props.board.type }</h1>
-                    <h2 className={ "board-subtitle" }>port: { this.props.board.id }</h2>
+                    <h2 className={ "board-subtitle" }>Unique identifier: { this.props.board.id }</h2>
                     <div className={ "board-heartbeat" }>
                         <div title={ "Heartbeat" } className={ `heartbeat ${ this.props.heartbeat ? 'pulse' : '' }` } />
                     </div>
