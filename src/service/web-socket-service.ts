@@ -6,11 +6,11 @@ class WebSocketService {
     private socket: WebSocket;
     private messageListeners: ( ( message: IWebSocketMessage ) => void )[] = [];
 
-    host = 'localhost';
+    host = '192.168.20.13';
     port = '80';
 
     constructor() {
-        this.socket = new WebSocket( `ws://${this.host}:${this.port}` );
+        this.socket = new WebSocket( `ws://${this.host}:${this.port}/socket` );
 
         this.socket.addEventListener( 'open', this.handleConnectionOpen.bind( this ) );
         this.socket.addEventListener( 'message', this.handleMessageReceived.bind( this ) )
