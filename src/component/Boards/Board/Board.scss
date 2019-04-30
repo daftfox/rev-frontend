@@ -8,7 +8,7 @@
   grid-gap: 1rem;
   grid-template-areas:
     "header"
-    "commands"
+    "actions"
     "footer";
 }
 
@@ -37,7 +37,7 @@
 
     &.pulse {
       box-shadow: 0 0 0 rgba(#ff2444, 0.4);
-      animation: heartbeat 2s 1;
+      animation: heartbeat .4s 1;
     }
   }
 }
@@ -60,15 +60,15 @@
   grid-area: icon;
 }
 
-.board-commands {
+.board-actions {
   border-top: 1px solid #efefef;
   padding-top: 1em;
-  grid-area: commands;
+  grid-area: actions;
 
   display: grid;
   grid-template-areas:
       "header"
-      "commands-form";
+      "actions-form";
   grid-template-columns: 1fr;
   grid-template-rows: 1.5em 1.5em;
 
@@ -81,14 +81,15 @@
   }
 }
 
-.board-commands-header {
+.board-actions-header,
+.board-pins-header {
   color: #555;
   grid-area: header;
   font-size: .8em;
 }
 
-.board-commands-form {
-  grid-area: commands-form;
+.board-actions-form {
+  grid-area: actions-form;
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-areas: "select button";

@@ -4,6 +4,7 @@ import './Board.scss';
 import MajorTom from './assets/images/MajorTom.png';
 import MCU from './assets/images/mcu.png';
 import CommandService from "../../../service/command-service";
+import IPin, {PIN_MODE} from "../../../interface/pin";
 
 class Board extends React.Component<{ board: IBoard, heartbeat: boolean }, { action: string }> {
     constructor( props: { board: IBoard, heartbeat: boolean } ) {
@@ -41,11 +42,11 @@ class Board extends React.Component<{ board: IBoard, heartbeat: boolean }, { act
                         <div title={ "Heartbeat" } className={ `heartbeat ${ this.props.heartbeat ? 'pulse' : '' }` } />
                     </div>
                 </header>
-                <div className={"board-commands"}>
-                    <h3 className={"board-commands-header"}>Available commands</h3>
+                <div className={"board-actions"}>
+                    <h3 className={"board-actions-header"}>Available actions</h3>
                     {
                         this.props.board.commands ? (
-                            <div className={"board-commands-form"}>
+                            <div className={"board-actions-form"}>
                                 <select defaultValue={ this.state.action }
                                         onChange={ ( event ) => { this.setState( { action: event.target.value } ) } }>
                                     { this.props.board.commands!.map( ( command: string ) =>
@@ -62,6 +63,15 @@ class Board extends React.Component<{ board: IBoard, heartbeat: boolean }, { act
                         ) : (
                             <span>This board doesn't have any available commands</span>
                         )
+                    }
+                </div>
+                <div className={"board-pins"}>
+                    <h3 className={"board-pins-header"}>Pins</h3>
+                    {
+                        this.props.board.pins.map( ( pin: IPin, index: number ) =>
+                            <div key={index}>
+                                <span>{pin.analog ? 'A' : 'D'}{pin.pinNumber}: </span><span>{pin.value} </span>
+                            </div> )
                     }
                 </div>
                 <footer className={ "board-footer" }>

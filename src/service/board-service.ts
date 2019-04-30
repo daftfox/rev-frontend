@@ -13,7 +13,6 @@ class BoardService {
     }
 
     private handleBoardEventReceived( webSocketMessage: IWebSocketMessage ) {
-        console.log("message received: ", webSocketMessage);
         if ( webSocketMessage.type !== WebSocketMessageType.BOARD_EVENT ) return;
         switch ( webSocketMessage.payload.action ) {
             case BoardActionType.ADD:
