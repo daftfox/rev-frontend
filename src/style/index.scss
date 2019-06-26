@@ -1,18 +1,26 @@
+@import './variables';
 @import 'component/index';
 @import 'base';
 
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Courier New';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #222;
+  background-image: url('/assets/images/background.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+//@media screen and ( max-width: 640px ) {
+//  html, body {
+//    height: 100vh;
+//    width: 100vw;
+//    overflow: hidden;
+//  }
+//}

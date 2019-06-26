@@ -1,0 +1,26 @@
+table {
+  box-sizing: border-box;
+  width: 100%;
+  border-width: 2px;
+  border-style: solid;
+  border-color: inherit;
+  border-spacing: 0;
+
+  table {
+    border: none;
+  }
+}
+
+thead {
+  vertical-align: top;
+}
+
+th {
+  padding: 0 .5rem;
+}
+
+td {
+  padding: 0 .5rem;
+  vertical-align: top;
+}
+

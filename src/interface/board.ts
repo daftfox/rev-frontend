@@ -6,6 +6,9 @@ export default interface IBoard {
     productId: string;
     type: string;
     pins: IPin[];
-    currentJob?: string;
-    commands?: string[];
+    currentProgram: string;
+    availableCommands: { name: string, requiresParams: boolean }[];
+    online: boolean;
+    lastUpdateReceived: string;
+    name?: string;
 }

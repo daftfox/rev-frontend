@@ -1,0 +1,13 @@
+.pin-state-digital {
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+
+  &.active {
+    background-color: #7aff73;
+  }
+
+  &.inactive {
+    background-color: #ff6f37;
+  }
+}

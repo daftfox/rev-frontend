@@ -1,32 +1,9 @@
 .boards {
-  padding: 1rem 3rem;
-
-  display: grid;
-  grid-template-areas:
-    "header"
-    "list";
-  grid-template-rows: auto 1fr;
-  grid-gap: 1rem;
+  padding: 3rem 3rem;
+  height: 100%;
 }
-
-.boards-header {
-  grid-area: header;
-}
-
-.boards-title {
-  font-size: 1.5em;
-  color: white;
-}
-
-.boards-subtitle {
-  font-size: .8em;
-  color: grey;
-}
-
-.boards-list {
-  grid-area: list;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto auto auto auto;
-  grid-gap: 1rem;
+@media screen and (max-width: 640px) {
+  .boards {
+    padding: 0;
+  }
 }

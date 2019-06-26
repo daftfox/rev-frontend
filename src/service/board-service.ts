@@ -1,31 +1,51 @@
-import { webSocketService } from './web-socket-service';
-import IWebSocketMessage, { WebSocketMessageType } from "../interface/web-socket-message";
+import {webSocketService} from './web-socket-service';
 import Boards from "../model/boards";
+import BoardBroadcast, {BOARD_BROADCAST_ACTION} from "../domain/web-socket-message/body/board-broadcast";
 import IBoard from "../interface/board";
-import {BoardActionType} from "../interface/board-event";
+import WebSocketMessage, {
+    WebSocketMessageKind,
+    WebSocketMessageType
+} from "../domain/web-socket-message/web-socket-message";
+import BoardRequest, {BoardAction} from "../domain/web-socket-message/body/board-request";
+import CommandRequest from "../domain/web-socket-message/body/command-request";
 
 class BoardService {
     private model: Boards;
 
     constructor( model: Boards ) {
         this.model = model;
-        webSocketService.addMessageListener( this.handleBoardEventReceived.bind( this ) );
+        webSocketService.addBoardMessageReceivedListener( this.handleBoardEventReceived.bind( this ) );
     }
 
-    private handleBoardEventReceived( webSocketMessage: IWebSocketMessage ) {
-        if ( webSocketMessage.type !== WebSocketMessageType.BOARD_EVENT ) return;
-        switch ( webSocketMessage.payload.action ) {
-            case BoardActionType.ADD:
-                this.model.add( <IBoard> webSocketMessage.payload.data.shift() );
+    public saveChanges( board: IBoard ): void {
+        const payload = {
+            action: BoardAction.UPDATE,
+            board,
+        };
+        const request = new WebSocketMessage<BoardRequest>( WebSocketMessageKind.REQUEST, WebSocketMessageType.BOARD_REQUEST, payload );
+        webSocketService.send( request );
+    }
+
+    public executeCommand( command: string, boardId: string, parameters?: string[] ): void {
+        const payload = {
+            action: command,
+            boardId: boardId,
+            parameters: parameters
+        };
+        const request = new WebSocketMessage<CommandRequest>( WebSocketMessageKind.REQUEST, WebSocketMessageType.COMMAND_REQUEST, payload );
+        webSocketService.send( request );
+    }
+
+    private handleBoardEventReceived( payload: BoardBroadcast ) {
+        switch ( payload.action ) {
+            case BOARD_BROADCAST_ACTION.NEW:
+                this.model.add( payload.boards );
                 break;
-            case BoardActionType.REMOVE:
-                this.model.remove( <IBoard> webSocketMessage.payload.data.shift() );
+            case BOARD_BROADCAST_ACTION.UPDATE:
+                this.model.update( payload.boards );
                 break;
-            case BoardActionType.UPDATE:
-                this.model.update( <IBoard> webSocketMessage.payload.data.shift() );
-                break;
-            case BoardActionType.UPDATE_ALL:
-                this.model.setBoards( <IBoard[]> webSocketMessage.payload.data );
+            case BOARD_BROADCAST_ACTION.REMOVE:
+                this.model.remove( payload.boards.pop()! );
                 break;
         }
     }

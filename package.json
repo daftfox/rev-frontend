@@ -11,9 +11,11 @@
     "node-sass": "^4.11.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-idle-timer": "^4.2.5",
     "react-scripts": "2.1.8",
     "rxjs": "^6.4.0",
     "typescript": "3.4.4",
+    "uuid": "^3.3.2",
     "websocket": "^1.0.28"
   },
   "scripts": {
@@ -30,5 +32,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/uuid": "^3.4.4"
+  }
 }

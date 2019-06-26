@@ -1,0 +1,48 @@
+.board {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.board-header {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.board-body {
+  display: flex;
+  flex-direction: row;
+  padding-top: 1rem;
+  box-sizing: border-box;
+
+  tr td {
+    border-top-width: 2px;
+    border-top-style: solid;
+  }
+}
+
+.board-pins {
+  width: 100%;
+  display: grid;
+  grid-gap: .5rem;
+  grid-template-columns: 2fr 1fr;
+}
+
+.board-actions {
+  .button-row {
+    justify-content: space-between;
+  }
+}
+
+.board-footer {
+  margin-top: auto;
+}
+
+@media screen and ( max-width: 640px ) {
+  .board-actions {
+    td {
+      padding: .5rem;
+      text-align: center;
+    }
+  }
+}

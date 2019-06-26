@@ -21,19 +21,30 @@ class Boards {
         this.$boards.next( this._boards );
     }
 
-    public add( board: IBoard ): void {
-        this._boards.push( board );
+    public add( boards: IBoard[] ): void {
+        this._boards.push( ...boards );
         this.$boards.next( this._boards );
     }
 
-    public update( board: IBoard ): void {
-        this._boards[this._boards.findIndex( _board => _board.id === board.id )] = board;
+    public update( boards: IBoard[] ): void {
+        boards.forEach( board => {
+            this._boards[this._boards.findIndex( _board => _board.id === board.id )] = board;
+        } );
         this.$boards.next( this._boards );
+    }
+
+    public saveChanges( board: IBoard ): void {
+        this.update( [board] );
+        this.service.saveChanges( board );
     }
 
     public remove( board: IBoard ): void {
         this._boards.splice( this._boards.findIndex( _board => _board.id === board.id ), 1 );
         this.$boards.next( this._boards );
+    }
+
+    public executeCommand( command: string, boardId: string, parameters?: string[] ): void {
+        this.service.executeCommand( command, boardId, parameters );
     }
 }
 

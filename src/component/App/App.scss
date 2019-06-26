@@ -1,5 +1,19 @@
 .app {
   height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr;
+}
+
+.screensaver {
+  pointer-events: none;
+  background: black;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity ease-in-out 1s;
+  height: 100vh;
+  width: 100vw;
+
+  &.visible {
+    opacity: 1;
+  }
 }

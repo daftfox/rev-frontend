@@ -8,3 +8,41 @@
     background-color: orange;
   }
 }
+
+.button- {
+  &row {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &column{
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.button {
+  //display: inline-flex;
+  font-size: 1rem;
+
+  &.right {
+    margin-left: auto;
+  }
+
+  &.small {
+    font-size: .8rem;
+  }
+
+  &.medium {
+    font-size: 1.5rem;
+  }
+
+  &.large {
+    font-size: 2rem;
+  }
+
+  &.terminal {
+
+  }
+}
