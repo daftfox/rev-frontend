@@ -41,6 +41,9 @@ class BoardService {
             case BOARD_BROADCAST_ACTION.NEW:
                 this.model.add( payload.boards );
                 break;
+            case BOARD_BROADCAST_ACTION.REPLACE:
+                this.model.setBoards( payload.boards );
+                break;
             case BOARD_BROADCAST_ACTION.UPDATE:
                 this.model.update( payload.boards );
                 break;

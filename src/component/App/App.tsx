@@ -7,6 +7,7 @@ class App extends React.Component<{}, { displayScreensaver: boolean }> {
     private readonly onIdle: ( e: Event ) => void;
     private readonly onAction: ( e: Event ) => void;
     private readonly screensaverTimeout = 1000 * 60 * 5;
+    // private readonly screensaverTimeout = 1000 * 10;
 
     constructor( props: any ) {
         super( props );

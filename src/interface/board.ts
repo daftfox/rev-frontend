@@ -9,6 +9,9 @@ export default interface IBoard {
     currentProgram: string;
     availableCommands: { name: string, requiresParams: boolean }[];
     online: boolean;
+    serialConnection: boolean;
     lastUpdateReceived: string;
+    refreshRate: number;
+    pinout: string;
     name?: string;
 }

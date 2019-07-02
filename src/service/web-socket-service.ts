@@ -2,20 +2,52 @@ import WebSocketMessage, {WebSocketMessageType} from "../domain/web-socket-messa
 import BoardBroadcast from "../domain/web-socket-message/body/board-broadcast";
 
 class WebSocketService {
-    private socket: WebSocket;
-    private boardMessageReceivedListeners: ( ( payload: BoardBroadcast ) => void )[] = [];
 
-   private host = window.location.hostname;
+    //public connected: boolean = false;
+
+    private socket: WebSocket | null = null;
+    private messageReceivedListeners: (() => void)[] = [];
+    private connectionOpenListeners: (( connected: boolean ) => void)[] = [];
+    private connectionClosedListeners: (( connected: boolean ) => void)[] = [];
+    private boardMessageReceivedListeners: ( ( payload: BoardBroadcast ) => void )[] = [];
+    private host = window.location.hostname;
    //private host = "192.168.20.13";
 
     constructor() {
-        this.socket = new WebSocket( `ws://${this.host}:3001` );
+        let socket = this.initializeSocket();
 
+        setInterval( () => {
+            if ( socket.readyState === WebSocket.CLOSED ) {
+                socket = this.initializeSocket();
+            } else {
+                this.socket = socket;
+            }
+        }, 1000 );
+    }
 
-        this.socket.addEventListener( 'open', this.handleConnectionOpen.bind( this ) );
-        this.socket.addEventListener( 'message', ( message: MessageEvent ) => {
+    private initializeSocket(): WebSocket {
+        let socket = new WebSocket( `ws://${this.host}:3001` );
+
+        socket.addEventListener( 'open', this.handleConnectionOpen.bind( this ) );
+        socket.addEventListener( 'close', this.handleConnectionClosed.bind( this ) );
+        socket.addEventListener( 'error', this.handleConnectionClosed.bind( this ) );
+        socket.addEventListener( 'message', ( message: MessageEvent ) => {
             this.handleMessageReceived( message.data );
-        } )
+        } );
+
+        return socket;
+    }
+
+    public addConnectionOpenListener( listener: ( connected: boolean ) => void ): void {
+        this.connectionOpenListeners.push( listener );
+    }
+
+    public addConnectionClosedListener( listener: ( connected: boolean ) => void ): void {
+        this.connectionClosedListeners.push( listener );
+    }
+
+    public addMessageReceivedListener( listener: () => void ): void {
+        this.messageReceivedListeners.push( listener );
     }
 
     public addBoardMessageReceivedListener( listener: ( payload: BoardBroadcast ) => void ): void {
@@ -27,8 +59,15 @@ class WebSocketService {
     }
 
     private handleConnectionOpen( event: any ): void {
+        this.connectionOpenListeners.forEach( listener => listener( true ) );
+        //this.connected = true;
         // retrieve boards
 
+    }
+
+    private handleConnectionClosed(): void {
+        this.connectionClosedListeners.forEach( listener => listener( false ) );
+        //this.connected = false;
     }
 
     private handleMessageReceived( message: any ): void {
@@ -39,10 +78,12 @@ class WebSocketService {
                 this.handleBoardMessageReceived( <WebSocketMessage<BoardBroadcast>> _message );
                 break;
         }
+
+        this.messageReceivedListeners.forEach( listener => listener() );
     }
 
     public send( request: WebSocketMessage<any> ): void {
-        this.socket.send( request.toJSON() );
+        this.socket!.send( request.toJSON() );
     }
 
 }
